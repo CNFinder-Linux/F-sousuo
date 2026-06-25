@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>搜索开始互联网之旅</title>
+    <title>搜索以开始互联网之旅</title>
 
-    <!-- ===== 网站图标 (Favicon) - 使用内联 SVG ===== -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧊</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧊</text></svg>">
+    <!-- ===== 网站图标 (Favicon) - 🍵 ===== -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B5%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B5%3C/text%3E%3C/svg%3E">
 
     <style>
         /* ----- 全局重置 & 壁纸背景 ----- */
@@ -31,129 +31,181 @@
             transition: background-image 0.8s ease;
             background-color: #152b3e;
             cursor: default;
+            flex-direction: column;
         }
 
-        /* ----- 液态玻璃卡片 (核心) ----- */
+        /* ----- 卡片：完全透明，无遮罩 ----- */
         .glass-card {
             width: 100%;
             max-width: 780px;
-            padding: 2.6rem 2.2rem 2.4rem;
-            background: rgba(20, 40, 60, 0.25);
-            backdrop-filter: blur(16px) saturate(200%);
-            -webkit-backdrop-filter: blur(16px) saturate(200%);
-            border-radius: 64px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 
-                0 30px 60px -12px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.04);
-            transition: all 0.3s ease;
+            padding: 2rem 1.8rem 2rem;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
             color: #f0f7ff;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            flex: 1;
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
+        /* ----- 语言选择菜单 (覆盖层) ----- */
+        .language-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
         }
 
-        .glass-card > * {
-            position: relative;
-            z-index: 1;
+        .language-overlay.hidden {
+            display: none;
         }
 
-        /* ----- 标题区域：显示动态问候语 ----- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .language-menu {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 32px;
+            padding: 2.4rem 2.8rem 2.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .language-menu h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .language-menu .sub {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        .language-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .language-options .lang-btn {
+            padding: 12px 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+
+        .language-options .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: scale(1.01);
+        }
+
+        .language-options .lang-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ----- 标题区域：动态问候语（固定英文，不随语言切换） ----- */
         .greeting-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 28px;
+            width: 100%;
+        }
+
+        .greeting-main {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 28px;
-            min-height: 70px;
         }
 
         .greeting-header .greeting-icon {
-            font-size: 2.4rem;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+            font-size: 2.8rem;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
             line-height: 1;
         }
 
         .greeting-header .greeting-title {
-            font-weight: 500;
-            font-size: 2.4rem;
-            background: linear-gradient(135deg, #f0f9ff, #b8d4f0);
+            font-weight: 600;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #ffffff, #b8d4f0);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 20px rgba(0,40,80,0.2);
+            text-shadow: 0 2px 30px rgba(0,40,80,0.3);
             letter-spacing: 1px;
-            transition: all 0.3s ease;
         }
 
-        /* 小屏适配 */
-        @media (max-width: 640px) {
-            .greeting-header .greeting-title {
-                font-size: 1.8rem;
-            }
-            .greeting-header .greeting-icon {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 430px) {
-            .greeting-header .greeting-title {
-                font-size: 1.5rem;
-            }
-            .greeting-header .greeting-icon {
-                font-size: 1.6rem;
-            }
-        }
-
-        /* ----- 融合搜索框 ----- */
+        /* ----- 融合搜索框 (玻璃质感) ----- */
         .search-fusion {
+            width: 100%;
+            max-width: 680px;
             background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px) saturate(160%);
-            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
             border-radius: 80px;
-            padding: 8px 8px 8px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 6px 6px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 
                 inset 0 2px 6px rgba(0,0,0,0.2),
-                0 12px 32px -8px rgba(0,0,0,0.4);
+                0 12px 32px -8px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
+            margin-bottom: 16px;
         }
 
         .search-fusion:focus-within {
             background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.2);
             box-shadow: 
                 inset 0 2px 8px rgba(0,0,0,0.15),
                 0 18px 40px -10px rgba(0, 30, 60, 0.6);
         }
 
-        /* ----- 引擎切换按钮组 (完全隐藏，保留DOM) ----- */
-        .engine-tabs {
-            display: none;
-        }
-        .engine-tab {
-            display: none;
-        }
-
-        /* 搜索输入框 */
         .search-input-fusion {
             flex: 1;
             background: transparent;
@@ -171,12 +223,11 @@
             font-weight: 300;
         }
 
-        /* 搜索按钮 */
         .search-btn-fusion {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 60px;
-            padding: 12px 24px;
+            padding: 12px 26px;
             font-size: 1rem;
             font-weight: 500;
             color: #fff;
@@ -187,11 +238,11 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .search-btn-fusion:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.18);
             border-color: rgba(255, 255, 255, 0.15);
             transform: scale(1.02);
         }
@@ -200,379 +251,558 @@
             transform: scale(0.96);
         }
 
-        /* ----- 状态提示 (引擎信息 + 切换提示) ----- */
-        .status-area {
-            margin-top: 28px;
+        /* ============================================================
+           引擎切换选项 (PC端一行，移动端一列)
+           ============================================================ */
+        .engine-selector {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px 16px;
+            gap: 8px;
             flex-wrap: wrap;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 10px 22px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.25s;
-            letter-spacing: 0.3px;
-            display: inline-flex;
-            margin-left: auto;
-            margin-right: auto;
-            width: fit-content;
-            cursor: default;
-            user-select: none;
+            width: 100%;
+            max-width: 720px;
         }
 
-        .status-area .engine-info {
-            display: inline-flex;
+        .engine-selector .engine-option {
+            display: flex;
             align-items: center;
-            gap: 4px;
-        }
-
-        .status-area .engine-info span {
-            font-weight: 500;
-            color: #b0d4ff;
-            margin: 0 2px;
-        }
-
-        .status-divider {
-            opacity: 0.2;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             user-select: none;
+            letter-spacing: 0.2px;
+            flex: 0 1 auto;
         }
 
-        .status-area .hint-icon {
-            opacity: 0.6;
+        .engine-selector .engine-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* 底部工作室信息 */
+        .engine-selector .engine-option.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 16px rgba(255, 255, 255, 0.03);
+        }
+
+        /* ----- 底部版权信息（放最下方，带 - 符号） ----- */
+        .footer-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 16px 0 8px 0;
+            margin-top: auto;
+        }
+
         .footer-studio {
-            margin-top: 32px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.15);
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding-top: 20px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            transition: color 0.3s;
             font-weight: 300;
+            padding: 0 12px;
         }
 
-        .footer-studio:hover {
-            color: rgba(255, 255, 255, 0.5);
+        /* ============================================================
+           移动端适配：搜索框置顶 + 引擎选项一列
+           ============================================================ */
+        .is-mobile body {
+            align-items: flex-start;
+            padding: 12px 10px;
         }
 
-        /* 响应式 */
-        @media (max-width: 640px) {
-            .glass-card {
-                padding: 2rem 1.2rem 1.8rem;
-                border-radius: 40px;
+        .is-mobile .glass-card {
+            padding: 0.6rem 0.2rem 1.2rem;
+            min-height: auto;
+            justify-content: flex-start;
+            width: 100%;
+            flex: 1;
+        }
+
+        .is-mobile .greeting-header {
+            margin-bottom: 12px;
+        }
+        .is-mobile .greeting-header .greeting-icon {
+            font-size: 1.8rem;
+        }
+        .is-mobile .greeting-header .greeting-title {
+            font-size: 1.6rem;
+        }
+
+        .is-mobile .search-fusion {
+            order: -1;
+            margin-bottom: 12px;
+            padding: 4px 4px 4px 16px;
+            max-width: 100%;
+            border-radius: 60px;
+        }
+        .is-mobile .search-input-fusion {
+            font-size: 0.95rem;
+            padding: 10px 6px;
+            min-width: 80px;
+        }
+        .is-mobile .search-btn-fusion {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .is-mobile .engine-selector {
+            flex-direction: column;
+            gap: 4px;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .is-mobile .engine-selector .engine-option {
+            width: 100%;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .is-mobile .footer-wrapper {
+            padding: 12px 0 6px 0;
+        }
+
+        .is-mobile .footer-studio {
+            font-size: 0.55rem;
+        }
+
+        .is-mobile-small .glass-card {
+            padding: 0.4rem 0.1rem 1rem;
+        }
+        .is-mobile-small .greeting-header .greeting-icon {
+            font-size: 1.4rem;
+        }
+        .is-mobile-small .greeting-header .greeting-title {
+            font-size: 1.2rem;
+        }
+        .is-mobile-small .search-input-fusion {
+            font-size: 0.85rem;
+            padding: 8px 4px;
+        }
+        .is-mobile-small .search-btn-fusion {
+            padding: 6px 12px;
+            font-size: 0.75rem;
+        }
+        .is-mobile-small .search-fusion {
+            padding: 4px 4px 4px 12px;
+            border-radius: 50px;
+        }
+        .is-mobile-small .engine-selector .engine-option {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+
+        /* 语言菜单移动端适配 */
+        @media (max-width: 480px) {
+            .language-menu {
+                padding: 1.8rem 1.2rem 2rem;
+                border-radius: 24px;
             }
-            .search-fusion {
-                padding: 6px 6px 6px 14px;
-                border-radius: 60px;
-                flex-wrap: wrap;
-                background: rgba(255, 255, 255, 0.08);
+            .language-menu h2 {
+                font-size: 1.3rem;
             }
-            .search-input-fusion {
-                font-size: 1rem;
-                padding: 12px 6px;
-                min-width: 100px;
-                flex: 1 1 140px;
-            }
-            .search-btn-fusion {
-                padding: 10px 18px;
+            .language-options .lang-btn {
+                padding: 10px 16px;
                 font-size: 0.9rem;
-            }
-            .status-area {
-                font-size: 0.75rem;
-                padding: 8px 16px;
-                gap: 4px 10px;
-            }
-            .footer-studio {
-                font-size: 0.7rem;
-                padding-top: 16px;
-                width: 90%;
-                margin-top: 24px;
-            }
-        }
-
-        @media (max-width: 430px) {
-            .search-btn-fusion {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-            }
-            .search-input-fusion {
-                font-size: 0.9rem;
-                padding: 10px 4px;
-            }
-            .status-area {
-                font-size: 0.7rem;
-                padding: 6px 12px;
-            }
-        }
-
-        @media (pointer: coarse) {
-            body:active {
-                transition: background-image 0.1s;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== 语言选择菜单（默认隐藏） ===== -->
+    <div class="language-overlay hidden" id="languageOverlay">
+        <div class="language-menu">
+            <h2 id="menuTitle">🌐 Choose Language</h2>
+            <p class="sub" id="menuSub">Select your preferred language</p>
+            <div class="language-options" id="languageOptions">
+                <!-- 由 JavaScript 动态生成 -->
+            </div>
+        </div>
+    </div>
+
     <div class="glass-card" id="app">
-        <!-- 标题区域：显示动态问候语 -->
-        <div class="greeting-header" id="greetingHeader">
-            <span class="greeting-icon" id="greetingHeaderIcon">🌅</span>
-            <span class="greeting-title" id="greetingHeaderTitle">Good morning!</span>
+        <!-- 标题区域：动态问候语（固定英文，不随语言切换） -->
+        <div class="greeting-header">
+            <div class="greeting-main">
+                <span class="greeting-icon" id="greetingHeaderIcon">🌅</span>
+                <span class="greeting-title" id="greetingHeaderTitle">Good morning!</span>
+            </div>
         </div>
 
         <!-- 融合搜索框 -->
         <div class="search-fusion" id="searchFusion">
-            <!-- 引擎切换按钮组 (完全隐藏) -->
-            <div class="engine-tabs" id="engineTabs">
-                <button class="engine-tab" data-engine="baidu">百度</button>
-                <button class="engine-tab" data-engine="sogou">搜狗</button>
-                <button class="engine-tab" data-engine="bing-cn">必应</button>
-                <button class="engine-tab" data-engine="google">Google</button>
-                <button class="engine-tab active" data-engine="bing">Bing</button>
-                <button class="engine-tab" data-engine="duckduckgo">Duck Duck Go</button>
-            </div>
-
-            <input type="text" class="search-input-fusion" id="searchInput" placeholder="输入关键词…" autofocus>
-
+            <input type="text" class="search-input-fusion" id="searchInput" placeholder="Enter keywords…" autofocus>
             <button class="search-btn-fusion" id="searchBtn">
-                <span>🔍</span> 搜索
+                <span>🔍</span> Search
             </button>
         </div>
 
-        <!-- 状态提示：引擎信息 + 切换方式 -->
-        <div class="status-area" id="statusArea">
-            <span class="engine-info">
-                <span class="hint-icon">✦</span> 当前引擎：<span id="currentEngineLabel">Bing</span>
-            </span>
-            <span class="status-divider">|</span>
-            <span style="opacity:0.3; font-size:0.7rem;" id="toggleHint">(Tab切换)</span>
+        <!-- ===== 引擎切换选项（新增Bilibili） ===== -->
+        <div class="engine-selector" id="engineSelector">
+            <span class="engine-option active" data-engine="bing">Bing</span>
+            <span class="engine-option" data-engine="baidu">Baidu</span>
+            <span class="engine-option" data-engine="sogou">Sogou</span>
+            <span class="engine-option" data-engine="google">Google</span>
+            <span class="engine-option" data-engine="yahoo">Yahoo</span>
+            <span class="engine-option" data-engine="360">360</span>
+            <span class="engine-option" data-engine="bilibili">Bilibili</span>
+            <span class="engine-option" data-engine="duckduckgo">DuckDuckGo</span>
         </div>
+    </div>
 
-        <div class="footer-studio">Finder studio 工作室制作</div>
+    <!-- ===== 底部版权信息 ===== -->
+    <div class="footer-wrapper">
+        <div class="footer-studio" id="footerStudio">- Finder studio 工作室制作 -</div>
     </div>
 
     <script>
         (function() {
             "use strict";
 
-            // ----- 搜索引擎库 -----
-            const ENGINES = {
-                baidu: { name: '百度', url: 'https://www.baidu.com/s?wd=', group: 'domestic' },
-                sogou: { name: '搜狗', url: 'https://www.sogou.com/web?query=', group: 'domestic' },
-                'bing-cn': { name: '必应', url: 'https://cn.bing.com/search?q=', group: 'domestic' },
-                google: { name: 'Google', url: 'https://www.google.com/search?q=', group: 'international' },
-                bing: { name: 'Bing', url: 'https://www.bing.com/search?q=', group: 'international' },
-                duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=', group: 'international' }
+            // ============================================================
+            // 多语言配置（问候语固定为英文，不在此配置中）
+            // ============================================================
+            var SUPPORTED_LOCALES = ['zh-CN', 'zh-TW', 'en', 'ja', 'ko'];
+
+            var LOCALE_DATA = {
+                'zh-CN': {
+                    label: '简体中文',
+                    placeholder: '输入关键词…',
+                    searchBtn: '搜索',
+                    engineLabels: {
+                        bing: '必应/Bing',
+                        baidu: '百度',
+                        sogou: '搜狗',
+                        google: 'Google',
+                        yahoo: '雅虎',
+                        '360': '360',
+                        bilibili: 'Bilibili',
+                        duckduckgo: 'DuckDuckGo'
+                    },
+                    footer: '- Finder studio 工作室制作 -',
+                    menuTitle: '🌐 选择语言',
+                    menuSub: '请选择您偏好的语言'
+                },
+                'zh-TW': {
+                    label: '繁體中文',
+                    placeholder: '輸入關鍵詞…',
+                    searchBtn: '搜尋',
+                    engineLabels: {
+                        bing: '必應/Bing',
+                        baidu: '百度',
+                        sogou: '搜狗',
+                        google: 'Google',
+                        yahoo: '雅虎',
+                        '360': '360',
+                        bilibili: 'Bilibili',
+                        duckduckgo: 'DuckDuckGo'
+                    },
+                    footer: '- Finder studio 工作室製作 -',
+                    menuTitle: '🌐 選擇語言',
+                    menuSub: '請選擇您偏好的語言'
+                },
+                'en': {
+                    label: 'English',
+                    placeholder: 'Enter keywords…',
+                    searchBtn: 'Search',
+                    engineLabels: {
+                        bing: 'Bing',
+                        baidu: 'Baidu',
+                        sogou: 'Sogou',
+                        google: 'Google',
+                        yahoo: 'Yahoo',
+                        '360': '360',
+                        bilibili: 'Bilibili',
+                        duckduckgo: 'DuckDuckGo'
+                    },
+                    footer: '- Finder studio -',
+                    menuTitle: '🌐 Choose Language',
+                    menuSub: 'Select your preferred language'
+                },
+                'ja': {
+                    label: '日本語',
+                    placeholder: 'キーワードを入力…',
+                    searchBtn: '検索',
+                    engineLabels: {
+                        bing: 'Bing',
+                        baidu: '百度',
+                        sogou: '搜狗',
+                        google: 'Google',
+                        yahoo: 'Yahoo',
+                        '360': '360',
+                        bilibili: 'Bilibili',
+                        duckduckgo: 'DuckDuckGo'
+                    },
+                    footer: '- Finder studio スタジオ制作 -',
+                    menuTitle: '🌐 言語を選択',
+                    menuSub: 'お好みの言語を選択してください'
+                },
+                'ko': {
+                    label: '한국어',
+                    placeholder: '키워드를 입력하세요…',
+                    searchBtn: '검색',
+                    engineLabels: {
+                        bing: 'Bing',
+                        baidu: '바이두',
+                        sogou: '소우거우',
+                        google: 'Google',
+                        yahoo: 'Yahoo',
+                        '360': '360',
+                        bilibili: 'Bilibili',
+                        duckduckgo: 'DuckDuckGo'
+                    },
+                    footer: '- Finder studio 스튜디오 제작 -',
+                    menuTitle: '🌐 언어 선택',
+                    menuSub: '선호하는 언어를 선택하세요'
+                }
             };
 
-            const ENGINE_KEYS = ['baidu', 'sogou', 'bing-cn', 'google', 'bing', 'duckduckgo'];
+            var DEFAULT_LOCALE = 'en';
 
-            // DOM
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const statusLabel = document.getElementById('currentEngineLabel');
-            const statusArea = document.getElementById('statusArea');
-            const toggleHint = document.getElementById('toggleHint');
-            const greetingHeaderIcon = document.getElementById('greetingHeaderIcon');
-            const greetingHeaderTitle = document.getElementById('greetingHeaderTitle');
-            const engineTabs = document.querySelectorAll('.engine-tab');
+            // ============================================================
+            // DOM 引用
+            // ============================================================
+            var overlay = document.getElementById('languageOverlay');
+            var menuTitle = document.getElementById('menuTitle');
+            var menuSub = document.getElementById('menuSub');
+            var langOptionsContainer = document.getElementById('languageOptions');
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var engineOptions = document.querySelectorAll('.engine-option');
+            var footerEl = document.getElementById('footerStudio');
 
-            // 默认引擎改为 Bing
-            let currentEngineKey = 'bing';
-            let currentIndex = ENGINE_KEYS.indexOf('bing'); // 4
+            var currentEngineKey = 'bing';
 
-            const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
-            if (isMobile) {
-                toggleHint.textContent = '(点击背景切换)';
-            } else {
-                toggleHint.textContent = '(Tab键切换)';
-            }
-
-            // ----- 获取时间问候语 (用于标题) -----
-            function getGreeting() {
-                const now = new Date();
-                const hour = now.getHours();
-
-                let emoji = '🌅';
-                let text = 'Good morning!';
-
-                if (hour >= 5 && hour < 12) {
-                    emoji = '🌅';
-                    text = 'Good morning!';
-                } else if (hour >= 12 && hour < 14) {
-                    emoji = '☀️';
-                    text = 'Good noon!';
-                } else if (hour >= 14 && hour < 18) {
-                    emoji = '🌤️';
-                    text = 'Good afternoon!';
-                } else {
-                    emoji = '🌙';
-                    text = 'Good evening!';
+            // ============================================================
+            // 检测浏览器语言
+            // ============================================================
+            function detectLocale() {
+                var lang = navigator.language || navigator.userLanguage || 'en';
+                if (lang.startsWith('zh')) {
+                    if (lang === 'zh-TW' || lang === 'zh-HK' || lang === 'zh-MO') return 'zh-TW';
+                    return 'zh-CN';
                 }
-
-                return { emoji, text };
+                if (lang.startsWith('ja')) return 'ja';
+                if (lang.startsWith('ko')) return 'ko';
+                return 'en';
             }
 
-            // 更新标题区的问候语
-            function updateGreetingHeader() {
-                const { emoji, text } = getGreeting();
-                greetingHeaderIcon.textContent = emoji;
-                greetingHeaderTitle.textContent = text;
+            function isSupported(locale) {
+                return SUPPORTED_LOCALES.indexOf(locale) !== -1;
             }
 
-            // ----- 核心切换 -----
-            function setActiveEngine(engineKey, fromUser = true) {
-                if (!ENGINES[engineKey]) return;
+            // ============================================================
+            // 获取本地化数据
+            // ============================================================
+            function getLocaleData(locale) {
+                return LOCALE_DATA[locale] || LOCALE_DATA[DEFAULT_LOCALE];
+            }
 
-                engineTabs.forEach(tab => {
-                    tab.classList.remove('active');
-                    if (tab.dataset.engine === engineKey) {
-                        tab.classList.add('active');
+            // ============================================================
+            // 应用语言到页面（问候语保持不变）
+            // ============================================================
+            function applyLocale(locale) {
+                var data = getLocaleData(locale);
+
+                if (searchInput) searchInput.placeholder = data.placeholder;
+                if (searchBtn) {
+                    searchBtn.innerHTML = '<span>🔍</span> ' + data.searchBtn;
+                }
+                engineOptions.forEach(function(opt) {
+                    var key = opt.dataset.engine;
+                    if (key && data.engineLabels[key]) {
+                        opt.textContent = data.engineLabels[key];
                     }
                 });
-
-                const engine = ENGINES[engineKey];
-                statusLabel.textContent = engine.name;
-
-                if (fromUser) {
-                    statusArea.style.transition = 'all 0.15s';
-                    statusArea.style.transform = 'scale(0.96)';
-                    statusArea.style.opacity = '0.7';
-                    setTimeout(() => {
-                        statusArea.style.transform = 'scale(1)';
-                        statusArea.style.opacity = '1';
-                    }, 80);
-                }
-
-                currentEngineKey = engineKey;
-                const idx = ENGINE_KEYS.indexOf(engineKey);
-                if (idx !== -1) currentIndex = idx;
-                searchInput.focus();
+                if (footerEl) footerEl.textContent = data.footer;
             }
 
-            function switchToNextEngine() {
-                const nextIndex = (currentIndex + 1) % ENGINE_KEYS.length;
-                const nextKey = ENGINE_KEYS[nextIndex];
-                setActiveEngine(nextKey, true);
+            // ============================================================
+            // 生成语言选择菜单
+            // ============================================================
+            function buildLanguageMenu(selectedLocale) {
+                langOptionsContainer.innerHTML = '';
+                SUPPORTED_LOCALES.forEach(function(locale) {
+                    var data = getLocaleData(locale);
+                    var btn = document.createElement('button');
+                    btn.className = 'lang-btn';
+                    btn.textContent = data.label;
+                    btn.dataset.locale = locale;
+                    btn.addEventListener('click', function() {
+                        var chosen = this.dataset.locale;
+                        overlay.classList.add('hidden');
+                        applyLocale(chosen);
+                        try {
+                            localStorage.setItem('preferredLocale', chosen);
+                        } catch (e) {}
+                    });
+                    langOptionsContainer.appendChild(btn);
+                });
+
+                var defaultData = getLocaleData(selectedLocale || DEFAULT_LOCALE);
+                menuTitle.textContent = defaultData.menuTitle || '🌐 Choose Language';
+                menuSub.textContent = defaultData.menuSub || 'Select your preferred language';
+            }
+
+            // ============================================================
+            // 显示语言选择菜单（如果浏览器语言不支持）
+            // ============================================================
+            function showLanguageMenuIfNeeded() {
+                var savedLocale = null;
+                try {
+                    savedLocale = localStorage.getItem('preferredLocale');
+                } catch (e) {}
+
+                if (savedLocale && isSupported(savedLocale)) {
+                    applyLocale(savedLocale);
+                    overlay.classList.add('hidden');
+                    return;
+                }
+
+                var detected = detectLocale();
+
+                if (isSupported(detected)) {
+                    applyLocale(detected);
+                    overlay.classList.add('hidden');
+                } else {
+                    buildLanguageMenu(DEFAULT_LOCALE);
+                    overlay.classList.remove('hidden');
+                }
+            }
+
+            // ============================================================
+            // 根据 UA 判断设备
+            // ============================================================
+            function isMobileDevice() {
+                var ua = navigator.userAgent || '';
+                var keywords = ['Android', 'iPhone', 'iPad', 'iPod', 'BlackBerry', 'Windows Phone', 'Opera Mini', 'IEMobile', 'Mobile', 'webOS', 'Symbian'];
+                for (var i = 0; i < keywords.length; i++) {
+                    if (ua.indexOf(keywords[i]) !== -1) return true;
+                }
+                return false;
+            }
+
+            function isSmallScreen() {
+                return window.innerWidth < 430;
+            }
+
+            function applyDeviceClass() {
+                var body = document.body;
+                body.classList.remove('is-mobile', 'is-mobile-small');
+                if (isMobileDevice()) {
+                    body.classList.add('is-mobile');
+                    if (isSmallScreen()) {
+                        body.classList.add('is-mobile-small');
+                    }
+                }
+            }
+
+            // ============================================================
+            // 搜索引擎配置
+            // ============================================================
+            var ENGINES = {
+                bing: { url: 'https://www.bing.com/search?q=' },
+                baidu: { url: 'https://www.baidu.com/s?wd=' },
+                sogou: { url: 'https://www.sogou.com/web?query=' },
+                google: { url: 'https://www.google.com/search?q=' },
+                yahoo: { url: 'https://search.yahoo.com/search?p=' },
+                '360': { url: 'https://www.so.com/s?q=' },
+                bilibili: { url: 'https://search.bilibili.com/all?keyword=' },
+                duckduckgo: { url: 'https://duckduckgo.com/?q=' }
+            };
+
+            engineOptions.forEach(function(opt) {
+                opt.addEventListener('click', function() {
+                    var key = this.dataset.engine;
+                    if (key && ENGINES[key]) {
+                        setActiveEngine(key, true);
+                    }
+                });
+            });
+
+            function setActiveEngine(engineKey, fromUser) {
+                if (!ENGINES[engineKey]) return;
+                engineOptions.forEach(function(opt) {
+                    if (opt.dataset.engine === engineKey) {
+                        opt.classList.add('active');
+                    } else {
+                        opt.classList.remove('active');
+                    }
+                });
+                currentEngineKey = engineKey;
+                if (fromUser) {
+                    searchInput.focus();
+                }
             }
 
             function performSearch() {
-                const query = searchInput.value.trim();
+                var query = searchInput.value.trim();
                 if (!query) {
                     searchInput.style.transition = 'border 0.1s';
                     searchInput.style.border = '1px solid rgba(255,180,180,0.4)';
-                    setTimeout(() => {
+                    setTimeout(function() {
                         searchInput.style.border = 'none';
                     }, 300);
                     return;
                 }
-
-                const engine = ENGINES[currentEngineKey];
+                var engine = ENGINES[currentEngineKey];
                 if (!engine) return;
-                const searchUrl = engine.url + encodeURIComponent(query);
-                window.open(searchUrl, '_blank');
+                window.open(engine.url + encodeURIComponent(query), '_blank');
             }
 
-            // ----- Bing 壁纸 (增强稳定版) -----
             function setBingWallpaper() {
-                const sources = [
+                var sources = [
                     'https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN',
                     'https://bing.img.run/1920x1080.php',
                     'https://api.dujin.org/bing/1920.php'
                 ];
 
-                let attempt = 0;
-                const maxAttempts = sources.length;
-
                 function tryLoad(index) {
-                    if (index >= maxAttempts) {
+                    if (index >= sources.length) {
                         document.body.style.backgroundImage = 'linear-gradient(145deg, #0f1f2f, #1a3450)';
-                        document.body.style.backgroundColor = '#0f1f2f';
-                        console.warn('所有Bing壁纸源加载失败，使用备用背景');
                         return;
                     }
-
-                    const url = sources[index];
-                    const img = new Image();
+                    var url = sources[index];
+                    var img = new Image();
                     img.crossOrigin = 'anonymous';
-
-                    img.onload = function() {
-                        document.body.style.backgroundImage = `url(${url})`;
-                        document.body.style.backgroundSize = 'cover';
-                        document.body.style.backgroundPosition = 'center';
-                        console.log('Bing壁纸加载成功 (源', index + 1, ')');
-                    };
-
-                    img.onerror = function() {
-                        console.warn('Bing壁纸源', index + 1, '加载失败，尝试下一个...');
-                        tryLoad(index + 1);
-                    };
-
-                    const timeoutId = setTimeout(() => {
+                    var timeoutId = setTimeout(function() {
                         img.src = '';
                         tryLoad(index + 1);
                     }, 8000);
-
-                    img.src = url;
                     img.onload = function() {
                         clearTimeout(timeoutId);
-                        document.body.style.backgroundImage = `url(${url})`;
+                        document.body.style.backgroundImage = 'url(' + url + ')';
                         document.body.style.backgroundSize = 'cover';
                         document.body.style.backgroundPosition = 'center';
                     };
+                    img.onerror = function() {
+                        tryLoad(index + 1);
+                    };
+                    img.src = url;
                 }
-
                 tryLoad(0);
             }
 
-            // ----- 事件绑定 -----
             function initEvents() {
-                // Tab键切换 (电脑端)
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
-                        e.preventDefault();
-                        switchToNextEngine();
-                        searchInput.focus();
-                    }
-                });
-
-                // 移动端：点击背景切换
-                document.body.addEventListener('click', function(e) {
-                    if (!isMobile) return;
-                    const card = document.querySelector('.glass-card');
-                    if (card && card.contains(e.target)) {
-                        const target = e.target;
-                        if (target === card || 
-                            (target.closest('.glass-card') && 
-                             !target.closest('button') && 
-                             !target.closest('input') && 
-                             !target.closest('.status-area') &&
-                             !target.closest('.greeting-header') &&
-                             !target.closest('.footer-studio'))) {
-                            switchToNextEngine();
-                            e.stopPropagation();
-                        }
-                        return;
-                    }
-                    if (!e.target.closest('.glass-card')) {
-                        switchToNextEngine();
-                    }
-                });
-
-                // 搜索
                 searchBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     performSearch();
@@ -585,33 +815,38 @@
                     }
                 });
 
-                // 点击状态条也可以切换
-                statusArea.addEventListener('click', function(e) {
-                    switchToNextEngine();
+                window.addEventListener('resize', function() {
+                    var body = document.body;
+                    if (isMobileDevice()) {
+                        if (window.innerWidth < 430) {
+                            body.classList.add('is-mobile-small');
+                        } else {
+                            body.classList.remove('is-mobile-small');
+                        }
+                    }
                 });
             }
 
-            // ----- 初始化 -----
             function initDefault() {
-                // 默认高亮 Bing
-                engineTabs.forEach(tab => {
-                    tab.classList.remove('active');
-                    if (tab.dataset.engine === 'bing') {
-                        tab.classList.add('active');
+                engineOptions.forEach(function(opt) {
+                    if (opt.dataset.engine === 'bing') {
+                        opt.classList.add('active');
+                    } else {
+                        opt.classList.remove('active');
                     }
                 });
-                statusLabel.textContent = 'Bing';
                 currentEngineKey = 'bing';
-                currentIndex = ENGINE_KEYS.indexOf('bing');
-                // 更新标题问候语
-                updateGreetingHeader();
             }
 
             function init() {
+                applyDeviceClass();
                 setBingWallpaper();
                 initEvents();
                 initDefault();
-                setTimeout(() => searchInput.focus(), 300);
+                showLanguageMenuIfNeeded();
+                setTimeout(function() {
+                    searchInput.focus();
+                }, 300);
             }
 
             if (document.readyState === 'complete') {
@@ -621,7 +856,6 @@
             }
 
             window.__switchEngine = setActiveEngine;
-
         })();
     </script>
 
