@@ -11,6 +11,7 @@
 
     <style>
         /* ----- 全局重置 & 壁纸背景 ----- */
+        /* 我说我没用AI你信吗？*/
         * {
             margin: 0;
             padding: 0;
@@ -142,22 +143,14 @@
             transform: scale(0.97);
         }
 
-        /* ----- 标题区域：动态问候语（固定英文，不随语言切换） ----- */
+        /* ----- 标题区域：动态问候语（合并后） ----- */
         .greeting-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            margin-bottom: 28px;
-            width: 100%;
-        }
-
-        .greeting-main {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
+            margin-bottom: 28px;
+            width: 100%;
         }
 
         .greeting-header .greeting-icon {
@@ -334,6 +327,7 @@
 
         .is-mobile .greeting-header {
             margin-bottom: 12px;
+            gap: 8px;
         }
         .is-mobile .greeting-header .greeting-icon {
             font-size: 1.8rem;
@@ -440,12 +434,10 @@
     </div>
 
     <div class="glass-card" id="app">
-        <!-- 标题区域：动态问候语（固定英文，不随语言切换） -->
-        <div class="greeting-header">
-            <div class="greeting-main">
-                <span class="greeting-icon" id="greetingHeaderIcon">🌅</span>
-                <span class="greeting-title" id="greetingHeaderTitle">Good morning!</span>
-            </div>
+        <!-- 标题区域：动态问候语（合并后） -->
+        <div class="greeting-header" id="greetingHeader">
+            <span class="greeting-icon" id="greetingHeaderIcon">🌅</span>
+            <span class="greeting-title" id="greetingHeaderTitle">Good morning!</span>
         </div>
 
         <!-- 融合搜索框 -->
@@ -456,7 +448,7 @@
             </button>
         </div>
 
-        <!-- ===== 引擎切换选项（新增Bilibili） ===== -->
+        <!-- ===== 引擎切换选项 ===== -->
         <div class="engine-selector" id="engineSelector">
             <span class="engine-option active" data-engine="bing">Bing</span>
             <span class="engine-option" data-engine="baidu">Baidu</span>
@@ -589,6 +581,8 @@
             var searchBtn = document.getElementById('searchBtn');
             var engineOptions = document.querySelectorAll('.engine-option');
             var footerEl = document.getElementById('footerStudio');
+            var greetingIcon = document.getElementById('greetingHeaderIcon');
+            var greetingTitle = document.getElementById('greetingHeaderTitle');
 
             var currentEngineKey = 'bing';
 
@@ -618,7 +612,24 @@
             }
 
             // ============================================================
-            // 应用语言到页面（问候语保持不变）
+            // 获取时间问候语
+            // ============================================================
+            function getGreeting() {
+                var hour = new Date().getHours();
+                if (hour >= 5 && hour < 12) return { emoji: '🌅', text: 'Good morning!' };
+                if (hour >= 12 && hour < 14) return { emoji: '☀️', text: 'Good noon!' };
+                if (hour >= 14 && hour < 18) return { emoji: '🌤️', text: 'Good afternoon!' };
+                return { emoji: '🌙', text: 'Good evening!' };
+            }
+
+            function updateGreeting() {
+                var g = getGreeting();
+                if (greetingIcon) greetingIcon.textContent = g.emoji;
+                if (greetingTitle) greetingTitle.textContent = g.text;
+            }
+
+            // ============================================================
+            // 应用语言到页面（问候语保持不变，只改其他内容）
             // ============================================================
             function applyLocale(locale) {
                 var data = getLocaleData(locale);
@@ -843,6 +854,7 @@
                 setBingWallpaper();
                 initEvents();
                 initDefault();
+                updateGreeting();
                 showLanguageMenuIfNeeded();
                 setTimeout(function() {
                     searchInput.focus();
