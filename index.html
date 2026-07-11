@@ -11,7 +11,6 @@
 
     <style>
         /* ----- 全局重置 & 壁纸背景 ----- */
-        /* 我说我没用AI你信吗？*/
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* ----- 卡片：完全透明，无遮罩 ----- */
         .glass-card {
             width: 100%;
             max-width: 780px;
@@ -170,19 +168,17 @@
             letter-spacing: 1px;
         }
 
-        /* ----- 融合搜索框 (玻璃质感) ----- */
+        /* ===== 搜索框和引擎选项改为完全透明 ===== */
         .search-fusion {
             width: 100%;
             max-width: 680px;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
             border-radius: 80px;
             padding: 6px 6px 6px 24px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                inset 0 2px 6px rgba(0,0,0,0.2),
-                0 12px 32px -8px rgba(0,0,0,0.5);
+            box-shadow: none;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             align-items: center;
@@ -192,11 +188,9 @@
         }
 
         .search-fusion:focus-within {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06) !important;
             border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                inset 0 2px 8px rgba(0,0,0,0.15),
-                0 18px 40px -10px rgba(0, 30, 60, 0.6);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.02);
         }
 
         .search-input-fusion {
@@ -217,25 +211,26 @@
         }
 
         .search-btn-fusion {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 60px;
             padding: 12px 26px;
             font-size: 1rem;
             font-weight: 500;
             color: #fff;
-            backdrop-filter: blur(6px);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 8px;
             white-space: nowrap;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: none;
         }
 
         .search-btn-fusion:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.15);
             transform: scale(1.02);
         }
@@ -245,7 +240,7 @@
         }
 
         /* ============================================================
-           引擎切换选项 (PC端一行，移动端一列)
+           引擎切换选项 (PC端一行，移动端一列) - 完全透明
            ============================================================ */
         .engine-selector {
             display: flex;
@@ -264,34 +259,34 @@
             gap: 6px;
             padding: 6px 16px;
             border-radius: 40px;
-            background: rgba(255, 255, 255, 0.03);
+            background: transparent !important;
             border: 1px solid rgba(255, 255, 255, 0.05);
             color: rgba(255, 255, 255, 0.4);
             font-size: 0.85rem;
             font-weight: 400;
             cursor: pointer;
             transition: all 0.25s ease;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
             user-select: none;
             letter-spacing: 0.2px;
             flex: 0 1 auto;
         }
 
         .engine-selector .engine-option:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06) !important;
             color: rgba(255, 255, 255, 0.7);
             border-color: rgba(255, 255, 255, 0.1);
         }
 
         .engine-selector .engine-option.active {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08) !important;
             color: #ffffff;
             border-color: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 16px rgba(255, 255, 255, 0.03);
         }
 
-        /* ----- 底部版权信息（放最下方，带 - 符号） ----- */
+        /* ----- 底部版权信息 ----- */
         .footer-wrapper {
             width: 100%;
             display: flex;
@@ -310,7 +305,7 @@
         }
 
         /* ============================================================
-           移动端适配：搜索框置顶 + 引擎选项一列
+           移动端适配
            ============================================================ */
         .is-mobile body {
             align-items: flex-start;
@@ -366,7 +361,7 @@
             padding: 8px 12px;
             font-size: 0.85rem;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.03);
+            background: transparent !important;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
@@ -404,7 +399,6 @@
             font-size: 0.75rem;
         }
 
-        /* 语言菜单移动端适配 */
         @media (max-width: 480px) {
             .language-menu {
                 padding: 1.8rem 1.2rem 2rem;
@@ -434,13 +428,11 @@
     </div>
 
     <div class="glass-card" id="app">
-        <!-- 标题区域：动态问候语（合并后） -->
         <div class="greeting-header" id="greetingHeader">
             <span class="greeting-icon" id="greetingHeaderIcon">🌅</span>
             <span class="greeting-title" id="greetingHeaderTitle">Good morning!</span>
         </div>
 
-        <!-- 融合搜索框 -->
         <div class="search-fusion" id="searchFusion">
             <input type="text" class="search-input-fusion" id="searchInput" placeholder="Enter keywords…" autofocus>
             <button class="search-btn-fusion" id="searchBtn">
@@ -448,7 +440,6 @@
             </button>
         </div>
 
-        <!-- ===== 引擎切换选项 ===== -->
         <div class="engine-selector" id="engineSelector">
             <span class="engine-option active" data-engine="bing">Bing</span>
             <span class="engine-option" data-engine="baidu">Baidu</span>
@@ -461,7 +452,6 @@
         </div>
     </div>
 
-    <!-- ===== 底部版权信息 ===== -->
     <div class="footer-wrapper">
         <div class="footer-studio" id="footerStudio">- Finder studio 工作室制作 - V2.0</div>
     </div>
@@ -471,7 +461,7 @@
             "use strict";
 
             // ============================================================
-            // 多语言配置（问候语固定为英文，不在此配置中）
+            // 支持的语言列表
             // ============================================================
             var SUPPORTED_LOCALES = ['zh-CN', 'zh-TW', 'en', 'ja', 'ko'];
 
@@ -587,10 +577,11 @@
             var currentEngineKey = 'bing';
 
             // ============================================================
-            // 检测浏览器语言
+            // 检测浏览器语言（仅依据 navigator.language，不涉及 IP）
             // ============================================================
             function detectLocale() {
                 var lang = navigator.language || navigator.userLanguage || 'en';
+                // 只取浏览器首选语言，无视 IP 归属
                 if (lang.startsWith('zh')) {
                     if (lang === 'zh-TW' || lang === 'zh-HK' || lang === 'zh-MO') return 'zh-TW';
                     return 'zh-CN';
@@ -629,7 +620,7 @@
             }
 
             // ============================================================
-            // 应用语言到页面（问候语保持不变，只改其他内容）
+            // 应用语言到页面
             // ============================================================
             function applyLocale(locale) {
                 var data = getLocaleData(locale);
