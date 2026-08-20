@@ -38,7 +38,12 @@
         #ie-warning .ie-icon { font-size: 64px; margin-bottom: 16px; }
         #ie-warning h2 { font-size: 24px; font-weight: 600; margin-bottom: 12px; color: #ffffff; }
         #ie-warning p { font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, 0.7); margin-bottom: 28px; }
-        #ie-warning .ie-browsers { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        #ie-warning .ie-browsers {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
         #ie-warning .ie-browsers a {
             display: inline-block; padding: 10px 24px; border-radius: 40px; background: rgba(255, 255, 255, 0.08);
             color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s ease;
@@ -188,9 +193,12 @@
             <h2>无法打开此页面</h2>
             <p>当前浏览器版本过低，请使用现代浏览器（如 Edge、Chrome、Firefox 等）打开。</p>
             <div class="ie-browsers">
+                <!-- 主流浏览器推荐 -->
                 <a href="https://www.microsoft.com/edge" target="_blank">Microsoft Edge</a>
                 <a href="https://www.google.com/chrome" target="_blank">Google Chrome</a>
                 <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <!-- 新增：IE 兼容版入口 -->
+                <a href="https://fousuo.dpdns.org/ie.html" target="_blank" style="border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.15);">访问 IE 兼容版</a>
             </div>
         </div>
     </div>
@@ -801,6 +809,70 @@
                 }
             }
 
+            // ==========================================================
+            // 【新增功能】桌面端鼠标拖拽切换搜索引擎
+            // ==========================================================
+            function initDesktopDragToSwitch() {
+                var capsule = document.getElementById('desktopEngineSelector');
+                if (!capsule) return;
+
+                var isDragging = false;
+                var lastX = 0;
+                var accumulatedDelta = 0;
+
+                var onPointerDown = function(e) {
+                    var x = e.clientX || e.pageX;
+                    if (x === undefined) return;
+                    isDragging = true;
+                    lastX = x;
+                    accumulatedDelta = 0;
+                };
+
+                var onPointerMove = function(e) {
+                    if (!isDragging) return;
+                    var currentX = e.clientX || e.pageX;
+                    if (currentX === undefined) return;
+                    var delta = currentX - lastX;
+                    accumulatedDelta += delta;
+                    lastX = currentX;
+
+                    // 左右拖动累计距离超过 20px 触发切换
+                    if (Math.abs(accumulatedDelta) > 20) {
+                        var engineKeys = Object.keys(ENGINES);
+                        var currentIndex = engineKeys.indexOf(currentEngineKey);
+                        var nextIndex;
+                        if (accumulatedDelta > 0) {
+                            nextIndex = (currentIndex + 1) % engineKeys.length;
+                        } else {
+                            nextIndex = (currentIndex - 1 + engineKeys.length) % engineKeys.length;
+                        }
+                        setActiveEngine(engineKeys[nextIndex], true);
+                        accumulatedDelta = 0; // 触发后重置，避免连续切换
+                    }
+                };
+
+                var onPointerUp = function(e) {
+                    isDragging = false;
+                    accumulatedDelta = 0;
+                };
+
+                // 鼠标事件
+                capsule.addEventListener('mousedown', onPointerDown);
+                document.addEventListener('mousemove', onPointerMove);
+                document.addEventListener('mouseup', onPointerUp);
+
+                // 触摸事件（触控板、触摸屏）
+                capsule.addEventListener('touchstart', function(e) {
+                    var touch = e.touches[0];
+                    if (touch) onPointerDown({ clientX: touch.clientX, pageX: touch.pageX });
+                });
+                document.addEventListener('touchmove', function(e) {
+                    var touch = e.touches[0];
+                    if (touch) onPointerMove({ clientX: touch.clientX, pageX: touch.pageX });
+                });
+                document.addEventListener('touchend', onPointerUp);
+            }
+
             function init() {
                 applyDeviceClass();
                 setBingWallpaper();
@@ -809,6 +881,7 @@
                 updateGreeting();
                 autoApplyLanguage();
                 detectHarmonyOS();
+                initDesktopDragToSwitch(); // 启动桌面拖拽
                 setTimeout(function() {
                     searchInput.focus();
                 }, 300);
