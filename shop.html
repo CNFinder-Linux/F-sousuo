@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>插件下载 · F-导航</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #0f1f2f, #1a3450);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.6s ease;
+            background-color: #152b3e;
+            cursor: default;
+            flex-direction: column;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+
+        .page-wrap {
+            width: 100%;
+            max-width: 780px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #f0f7ff;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 36px;
+        }
+        .header .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #b8d4f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        .header p {
+            margin-top: 8px;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.5px;
+        }
+
+        .card-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .plugin-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px 24px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+        .plugin-card:hover {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .plugin-card .plugin-icon {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plugin-card .plugin-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .plugin-card .plugin-info h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .plugin-card .plugin-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+
+        .plugin-card .plugin-btn {
+            flex-shrink: 0;
+            padding: 10px 22px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .plugin-card .plugin-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: scale(1.03);
+        }
+        .plugin-card .plugin-btn:active {
+            transform: scale(0.96);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 32px;
+            padding: 10px 28px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .footer {
+            margin-top: 24px;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 560px) {
+            .header h1 { font-size: 1.8rem; }
+            .header .icon { font-size: 2.4rem; }
+
+            .plugin-card {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+                padding: 18px;
+                text-align: center;
+            }
+            .plugin-card .plugin-icon {
+                margin: 0 auto;
+            }
+            .plugin-card .plugin-btn {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrap">
+
+        <div class="header">
+            <span class="icon">🔧</span>
+            <h1>插件下载</h1>
+            <p>F-导航增强脚本 · 油猴插件合集</p>
+        </div>
+
+        <div class="card-list">
+
+            <!-- 自定义问候语 -->
+            <div class="plugin-card">
+                <div class="plugin-icon">💬</div>
+                <div class="plugin-info">
+                    <h3>导航页自定义问候语</h3>
+                    <p>在页面顶部显示你自定义的问候语，取代默认的 "Good morning!" 等内容。</p>
+                </div>
+                <a class="plugin-btn"
+                   href="https://wwaxo.lanzoum.com/iekf33w0kk8j"
+                   target="_blank"
+                   rel="noopener">
+                    ⬇ 下载
+                </a>
+            </div>
+
+            <!-- 自定义搜索引擎 -->
+            <div class="plugin-card">
+                <div class="plugin-icon">🔍</div>
+                <div class="plugin-info">
+                    <h3>导航页自定义搜索引擎</h3>
+                    <p>自由选择默认搜索引擎，打开页面时自动高亮你设置的引擎。</p>
+                </div>
+                <a class="plugin-btn"
+                   href="https://wwaxo.lanzoum.com/iMpfY42b7huh"
+                   target="_blank"
+                   rel="noopener">
+                    ⬇ 下载
+                </a>
+            </div>
+
+        </div>
+
+        <a href="/" class="back-btn">⬅ 返回导航首页</a>
+
+        <div class="footer">- Finder studio 工作室制作 -</div>
+    </div>
+
+    <script>
+        // 必应壁纸加载（带缓存）
+        function setBingWallpaper() {
+            var cachedImage = null;
+            try {
+                var cachedData = localStorage.getItem('bing_wallpaper_cache');
+                if (cachedData) {
+                    var parsed = JSON.parse(cachedData);
+                    if (parsed && parsed.data && (Date.now() - parsed.timestamp < 365 * 24 * 60 * 60 * 1000)) {
+                        cachedImage = parsed.data;
+                    }
+                }
+            } catch (e) {}
+
+            if (cachedImage) {
+                document.body.style.backgroundImage = 'url(' + cachedImage + ')';
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                return;
+            }
+
+            var sources = [
+                'https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN',
+                'https://bing.img.run/1920x1080.php',
+                'https://api.dujin.org/bing/1920.php'
+            ];
+
+            function tryLoad(index) {
+                if (index >= sources.length) return;
+                var url = sources[index];
+                var img = new Image();
+                var timeoutId = setTimeout(function() {
+                    tryLoad(index + 1);
+                }, 5000);
+                img.onload = function() {
+                    clearTimeout(timeoutId);
+                    document.body.style.backgroundImage = 'url(' + url + ')';
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    try {
+                        localStorage.setItem('bing_wallpaper_cache', JSON.stringify({
+                            data: url,
+                            timestamp: Date.now()
+                        }));
+                    } catch (e) {}
+                };
+                img.onerror = function() {
+                    clearTimeout(timeoutId);
+                    tryLoad(index + 1);
+                };
+                img.src = url;
+            }
+            tryLoad(0);
+        }
+
+        setBingWallpaper();
+    </script>
+
+</body>
+</html>
