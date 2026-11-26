@@ -733,7 +733,7 @@
                 }
                 var engine = ENGINES[currentEngineKey];
                 if (!engine) return;
-                window.open(engine.url + encodeURIComponent(query), '_blank');
+                window.location.href = engine.url + encodeURIComponent(query);
             }
 
             function initEvents() {
